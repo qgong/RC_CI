@@ -5,6 +5,7 @@
 # You can get more details by https://projects.engineering.redhat.com/browse/ERRATA-7932
 
 set -eo
+sleep 3600
 
 for server in "${pub_server}" "${pulp_rpm_server}" "${pulp_docker_server}"
 do
