@@ -4,13 +4,10 @@
 # 2. restart the services before doing the testing
 # You can get more details by https://projects.engineering.redhat.com/browse/ERRATA-7932
 
-sleep 3600
-set -eo
+set -e -o
 
 for server in "${pub_server}" "${pulp_rpm_server}" "${pulp_docker_server}"
 do
   echo "== Preparing: ${server}"
-  ssh -i /root/.ssh/id_rsa -o "StrictHostKeyChecking no" root@${pulp_docker_server}  'sh /root/prepare.sh'
+  ssh -i /root/.ssh/id_rsa -o "StrictHostKeyChecking no" root@${server}  'sh /root/prepare_env.sh'
 done
-
-
