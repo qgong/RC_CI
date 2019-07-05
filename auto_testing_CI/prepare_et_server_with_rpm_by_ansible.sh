@@ -23,6 +23,8 @@ run_ansible(){
   e2e_env_workaround ${ET_Testing_Server} ${ansible_workspace}
   cd ../
   pwd
+  echo ${1}
+  sleep 3600
   ${1}
 }
 
