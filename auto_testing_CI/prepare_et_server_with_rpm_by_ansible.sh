@@ -19,12 +19,9 @@ run_ansible(){
   #cd ${ansible_workspace}/playbooks/errata-tool
   cd ${ansible_workspace}/playbooks
   make clean-roles
-  make qe-roles --ignore-errors
-  e2e_env_workaround ${ET_Testing_Server} ${ansible_workspace}
+  make qe-roles
   cd ../
   pwd
-  echo ${1}
-  sleep 3600
   ${1}
 }
 
