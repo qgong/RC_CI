@@ -4,7 +4,7 @@ set -eo pipefail
 ET_Testing_Server=${ET_Testing_Server}
 ET_Production_Server="errata.devel.redhat.com"
 et_build_name_or_id=${et_build_name_or_id}
-ansible_workspace=${WORKSPACE}/errata-tool-playbooks"
+ansible_workspace=${WORKSPACE}/errata-tool-playbooks
 ci_3_workspace=${WORKSPACE}
 
 prepare_ansible_ssh_permission(){
