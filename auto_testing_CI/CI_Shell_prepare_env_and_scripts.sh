@@ -10,6 +10,7 @@ install_scripts_env() {
   pip install --user bugzilla
   pip install --user python-bugzilla
   pip install --user jira
+  pip install --user paramiko
 }
 prepare_scripts(){
   mkdir -p ${1}
