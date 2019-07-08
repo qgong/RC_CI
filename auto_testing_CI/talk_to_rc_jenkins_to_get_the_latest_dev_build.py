@@ -40,10 +40,10 @@ class TalkToRCCIForLatestDevBuild():
 if __name__ == "__main__":
     username = sys.argv[1]
     password = sys.argv[2]
-    build_name = sys.argv[3] or ''
-    if build_name == '':
-        talk_to_rc_jenkins = TalkToRCCIForLatestDevBuild(username, password)
-    else:
+    if len(sys.argv) == 4:
+        build_name = sys.argv[3]
         talk_to_rc_jenkins = TalkToRCCIForLatestDevBuild(
             username, password, build_name)
+    else:
+        talk_to_rc_jenkins = TalkToRCCIForLatestDevBuild(username, password)
     talk_to_rc_jenkins.get_dev_build()
