@@ -4,13 +4,16 @@ import sys
 import talk_to_rc_jenkins_psi
 import get_all_pub_pulp_product_version_content
 
+
 class GenerateRCReportContent():
-	#first talk to RC CI and then generate the testing report content
+	# first talk to RC CI and then generate the testing report content
+
 	def __init__(self, username, password, confluence_username, confluence_password, build_name, expected_rc_version):
 		self.build_name = build_name
-		self.ci_jenkins = talk_to_rc_jenkins_psi.TalkToRCCI(username, password, build_name)
+		self.ci_jenkins = talk_to_rc_jenkins_psi.TalkToRCCI(
+		    username, password, build_name)
 		self.ci_jenkins.get_test_report_for_build()
-		self.test_report =self.ci_jenkins.test_report
+		self.test_report = self.ci_jenkins.test_report
 		self.current_rc_version = self.ci_jenkins.current_rc_version
 		self.expected_rc_version = "ET Version/Commit: " + expected_rc_version
 		self.test_table_html = ""
@@ -38,23 +41,24 @@ class GenerateRCReportContent():
         <p>cucumber-et-testing-2.cloud.paas.psi.redhat.com</p>
         '''
 		self.env_options = ""
-		self.get_pub_pulp_content = get_all_pub_pulp_product_version_content.GetAllPubPulpVersionContent(confluence_username, confluence_password)
-
+		self.get_pub_pulp_content = get_all_pub_pulp_product_version_content.GetAllPubPulpVersionContent(
+		    confluence_username, confluence_password)
 
 	def update_e2e_env_with_pub_pulp(self):
 		self.get_pub_pulp_content.get_all_pub_pulp_content()
 		self.e2e_env += self.get_pub_pulp_content.all_pub_pulp_content
 
 	def generate_env_options(self):
-		self.env_options = {'Performance Baseline Testing':self.perf_env, 'TS2.0 UAT Testing':self.ts2_uat_env,
-                            'E2E Testing':self.e2e_env,
-		                    'Bug Regression Testing':self.bug_regression_env}
+		self.env_options = {'Performance Baseline Testing': self.perf_env, 'TS2.0 UAT Testing': self.ts2_uat_env,
+                            'E2E Testing': self.e2e_env,
+		                    'Bug Regression Testing': self.bug_regression_env}
 
 	def generate_head_row_html(self):
-		table_column = ['Test Type', 'Test Result', 'Test Result Url', 'Test Enviroment']
+		table_column = ['Test Type', 'Test Result',
+		    'Test Result Url', 'Test Enviroment']
 		head_row = ""
 		for column_name in table_column:
-			head_row += "<th colspan='1'>" + column_name +"</th>"
+			head_row += "<th colspan='1'>" + column_name + "</th>"
 		self.head_row_html = "<tr>" + head_row + "</tr>"
 
 	def generate_test_report_row_html(self):
@@ -62,16 +66,24 @@ class GenerateRCReportContent():
 		test_table_row_content_body = ""
 		for item in self.test_report:
 			if item == "PASSED":
-				test_table_row_content_body += "<td>" + "<strong><span style='color: rgb(0,128,0);'>" + item + "</span></strong>" + "</td>"
+				test_table_row_content_body += "<td>" + \
+				    "<strong><span style='color: rgb(0,128,0);'>" + \
+				                                     item + "</span></strong>" + "</td>"
 			if item.find("FAILED") > -1:
-				test_table_row_content_body += "<td>" + "<strong><span style='color: rgb(255,0,0);'>" + item + "</span></strong>" + "</td>"
+				test_table_row_content_body += "<td>" + \
+				    "<strong><span style='color: rgb(255,0,0);'>" + \
+				                                     item + "</span></strong>" + "</td>"
 			if item == "IN PROGRESS":
-				test_table_row_content_body += "<td>" + "<strong><span style='color: rgb(255,204,0);'>" + item + "</span></strong>" + "</td>"
+				test_table_row_content_body += "<td>" + \
+				    "<strong><span style='color: rgb(255,204,0);'>" + \
+				                                     item + "</span></strong>" + "</td>"
 			if item.find("http") > -1:
-				test_table_row_content_body += "<td>" + "<a href='" + item + "'>" + item + "</a>" + "</td>"
-			if item.find("Testing") > -1 and item.find("http") <0:
+				test_table_row_content_body += "<td>" + "<a href='" + \
+				    item + "'>" + item + "</a>" + "</td>"
+			if item.find("Testing") > -1 and item.find("http") < 0:
 				test_table_row_content_body += "<td>" + item + "</td>"
-		test_table_row_content_body += "<td>" + self.env_options[self.test_type] + "</td>"
+		test_table_row_content_body += "<td>" + \
+		    self.env_options[self.test_type] + "</td>"
 		self.test_report_row_html = "<tr>" + test_table_row_content_body + "</tr>"
 
 	def generate_test_report_html(self):
@@ -79,11 +91,12 @@ class GenerateRCReportContent():
 		self.generate_env_options()
 		self.generate_head_row_html()
 		self.generate_test_report_row_html()
-		self.test_table_html = "<table><tbody>" + self.head_row_html + self.test_report_row_html + "</tbody></table>"
+		self.test_table_html = "<table><tbody>" + self.head_row_html + \
+		    self.test_report_row_html + "</tbody></table>"
 
 	def write_page_file(self):
 		content_file = self.test_type.replace(' ', "") + "_content.txt"
-		f = open(str(content_file),'w')
+		f = open(str(content_file), 'w')
 		f.write(self.test_table_html)
 		f.close
 
@@ -100,7 +113,7 @@ class GenerateRCReportContent():
 		else:
 			print "Expect ET Version: " + self.expected_rc_version
 			print "The lastest testing ET Version: " + self.current_rc_version
-			print  "==========The latest job is not for the current rc build testing, will not generate report====="
+			print "==========The latest job is not for the current rc build testing, will not generate report====="
 
     def generate_rc_report_for_commit(self):
         if self.test_type in ['TS2.0 UAT Testing', 'E2E Testing']:
@@ -111,8 +124,8 @@ class GenerateRCReportContent():
         self.generate_rc_report_for_commit()
 
 if __name__== "__main__":
-	#print len(sys.argv)
-	#print sys.argv
+	# print len(sys.argv)
+	# print sys.argv
 	if len(sys.argv) ==7 :
 		username = sys.argv[1]
 		password = sys.argv[2]
