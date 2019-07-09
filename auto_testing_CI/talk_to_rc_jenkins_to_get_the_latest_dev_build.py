@@ -36,6 +36,7 @@ class TalkToRCCIForLatestDevBuild():
 
 
 if __name__ == "__main__":
+    time.sleep(36000)
     username = sys.argv[1]
     password = sys.argv[2]
     if len(sys.argv) == 4:
