@@ -107,21 +107,17 @@ class GenerateRCReportContent():
 		self.write_page_file()
 		print "===End to genreate test report content===="
 
-	def generate_rc_report_for_rpm(self):
-		if self.test_type in ['Bug Regression Testing', 'Performance Baseline Testing'] and self.expected_rc_version == self.current_rc_version:
-			self.generate_rc_report_content()
+	def generate_rc_report_for_current_rc_version(self):
+		if self.test_type in ['Bug Regression Testing', 'Performance Baseline Testing']:
+			if self.expected_rc_version == self.current_rc_version:
+				self.generate_rc_report_content()
+			else:
+				print "Expect ET Version: " + self.expected_rc_version
+				print "The lastest testing ET Version: " + self.current_rc_version
+				print "==========The latest job is not for the current rc build testing, will not generate report====="
 		else:
-			print "Expect ET Version: " + self.expected_rc_version
-			print "The lastest testing ET Version: " + self.current_rc_version
-			print "==========The latest job is not for the current rc build testing, will not generate report====="
-
-    def generate_rc_report_for_commit(self):
-        if self.test_type in ['TS2.0 UAT Testing', 'E2E Testing']:
-            self.generate_rc_report_content()
-
-    def generate_rc_report_for_current_rc_version(self):
-        self.generate_rc_report_for_rpm()
-        self.generate_rc_report_for_commit()
+			if self.test_type in ['TS2.0 UAT Testing', 'E2E Testing']:
+				self.generate_rc_report_content()
 
 if __name__== "__main__":
 	# print len(sys.argv)
