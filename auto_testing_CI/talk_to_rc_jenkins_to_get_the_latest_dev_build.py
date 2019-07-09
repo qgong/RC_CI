@@ -3,6 +3,7 @@
 import jenkins
 import os
 import sys
+import time
 
 RC_Jenkins = os.environ.get(
     'RC_Jenkins_URL') or 'https://errata-jenkins.rhev-ci-vms.eng.rdu2.redhat.com'
@@ -37,7 +38,9 @@ class TalkToRCCIForLatestDevBuild():
             return "Error, the latest job to build rpm is failed. No build!"
 
 
+
 if __name__ == "__main__":
+    time.sleep(7200)
     username = sys.argv[1]
     password = sys.argv[2]
     if len(sys.argv) == 4:
