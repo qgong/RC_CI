@@ -18,16 +18,12 @@ class TalkToRCCIForLatestDevBuild():
         self.build_name = build_name
         self.server = jenkins.Jenkins(RC_Jenkins, self.username, self.password)
         self.et_build_version = ""
-        self.lastest_build_number = 0
-        self.get_latest_successful_build_number = 0
 
     def get_lastest_build_number(self):
-        self.lastest_build_number = self.server.get_job_info(self.build_name)[
-            'lastBuild']['number']
+        return self.server.get_job_info(self.build_name)['lastBuild']['number']
 
     def get_latest_successful_build_number(self):
-        self.get_latest_successful_build_number = self.server.get_job_info(
-            self.build_name)['lastSuccessfulBuild']['number']
+        return self.server.get_job_info(self.build_name)['lastSuccessfulBuild']['number']
 
     def get_dev_build(self):
         ready_build = self.get_latest_successful_build_number()
@@ -40,7 +36,6 @@ class TalkToRCCIForLatestDevBuild():
 
 
 if __name__ == "__main__":
-    time.sleep(7200)
     username = sys.argv[1]
     password = sys.argv[2]
     if len(sys.argv) == 4:
