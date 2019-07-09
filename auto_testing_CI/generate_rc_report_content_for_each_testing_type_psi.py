@@ -95,8 +95,7 @@ class GenerateRCReportContent():
 		print "===End to genreate test report content===="
 
 	def generate_rc_report_for_rpm(self):
-		if self.test_type in ['Bug Regression Testing', 'Performance Baseline
-                Testing'] and self.expected_rc_version == self.current_rc_version:
+		if self.test_type in ['Bug Regression Testing', 'Performance Baseline Testing'] and self.expected_rc_version == self.current_rc_version:
 			self.generate_rc_report_content()
 		else:
 			print "Expect ET Version: " + self.expected_rc_version
