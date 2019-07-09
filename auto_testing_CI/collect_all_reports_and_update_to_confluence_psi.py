@@ -16,8 +16,8 @@ class CollectAllReportsAndUpdateToConfluence():
     self.et_rc_version = et_rc_version
     self.each_rc_report = ""
     self.file = file
-    self.build_name_list = ['errata-qe-test/e2e-post-merge-pipeline', 'errata-qe-test/baseline-performance-pipeline',
-                            'errata-qe-test/bug-regression-pipeline', 'errata-qe-test/ts2-post-merge-pipeline']
+    self.build_name_list = ['errata-qe-test/errata-qe-test-e2e-post-merge-pipeline', 'errata-qe-test/errata-qe-test-baseline-performance-pipeline',
+                            'errata-qe-test/errata-qe-test-bug-regression-pipeline', 'errata-qe-test/errata-qe-test-ts2-post-merge-pipeline']
     self.all_rc_report = generate_rc_report_content_for_all_testings_psi.GenerateAllReports()
     self.final_report = ""
     self.title = title
@@ -49,7 +49,7 @@ class CollectAllReportsAndUpdateToConfluence():
     self.add_page_to_confluence()
 
 if __name__ == "__main__":
-  time.sleep(36000)
+  #time.sleep(36000)
   if len(sys.argv) < 8:
     raise ci3_error.CollectAllReportsAndAddToConfluenceInputError
   else:
