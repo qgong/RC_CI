@@ -29,9 +29,9 @@ class TalkToRCCIForLatestDevBuild():
         ready_build = self.get_latest_successful_build_number()
         latest_build = self.get_lastest_build_number()
         if ready_build == latest_build:
-            return ready_build
+            print ready_build
         else:
-            return "Error, the latest job to build rpm is failed. No build!"
+            print "Error, the latest job to build rpm is failed. No build!"
 
 
 
