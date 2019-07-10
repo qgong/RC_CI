@@ -115,8 +115,12 @@ class GenerateRCReportContent():
         print "The lastest testing ET Version: " + self.current_rc_version
         print "==========The latest job is not for the current rc build testing, will not generate report====="
     else:
-      if self.test_type in ['TS2.0 UAT Testing', 'E2E Testing']:
-        self.generate_rc_report_content()
+      if self.test_type == 'TS2.0 UAT Testing':
+        self.ts2_uat_env = "<p>Commit:" + \
+            self.current_rc_version + "</p>" + self.ts2_uat_env
+      if self.test_type == 'E2E Testing':
+        self.e2e_env = "<p>Commit:" + self.current_rc_version + "</p>" + self.e2e_env
+      self.generate_rc_report_content()
 
 if __name__ == "__main__":
   # print len(sys.argv)
