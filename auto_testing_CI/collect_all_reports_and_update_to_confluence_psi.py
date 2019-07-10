@@ -4,7 +4,6 @@ import generate_rc_report_content_for_each_testing_type_psi
 import generate_rc_report_content_for_all_testings_psi
 import confluence_client
 import ci3_error
-import time
 
 class CollectAllReportsAndUpdateToConfluence():
 
@@ -49,7 +48,6 @@ class CollectAllReportsAndUpdateToConfluence():
     self.add_page_to_confluence()
 
 if __name__ == "__main__":
-  time.sleep(36000)
   if len(sys.argv) < 8:
     raise ci3_error.CollectAllReportsAndAddToConfluenceInputError
   else:
