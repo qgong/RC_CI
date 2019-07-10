@@ -6,7 +6,7 @@ import sys
 
 RC_Jenkins = os.environ.get(
     'RC_Jenkins_URL') or 'https://errata-jenkins.rhev-ci-vms.eng.rdu2.redhat.com'
-
+print "Connect to Jenkins: " + RC_Jenkins
 Build_Job = 'deployment-packages'
 
 
