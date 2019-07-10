@@ -64,10 +64,10 @@ class GenerateRCReportContent():
   def generate_test_report_row_html(self):
     test_table_row_content_body = ""
     for item in self.test_report:
-      if item == "PASSED":
+      if item == "PASSED" or item == "SUCCESS":
         test_table_row_content_body += "<td>" + \
             "<strong><span style='color: rgb(0,128,0);'>" + \
-            item + "</span></strong>" + "</td>"
+            "PASSED" + "</span></strong>" + "</td>"
       if item.find("FAILED") > -1:
         test_table_row_content_body += "<td>" + \
             "<strong><span style='color: rgb(255,0,0);'>" + \
