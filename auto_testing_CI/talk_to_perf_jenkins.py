@@ -142,8 +142,8 @@ if __name__ == "__main__":
   username = os.environ.get('ET_Perf_User') or sys.argv[3]
   password = os.environ.get('ET_Perf_User_Password') or sys.argv[4]
   baseline_job_id = sys.argv[5]
-  et_version_output = subprocess.check_output(
-      "curl http://${ET_Perf_Server}/system_version.json", shell=True)
+  curl_version = "curl http://" + ET_Perf_Server + "/system_version.json"
+  et_version_output = subprocess.check_output(curl_version, shell=True)
   et_rc_version = str(et_version_output).split('.')[-2]
   # print et_rc_version
   if testing_type == "smoke":
