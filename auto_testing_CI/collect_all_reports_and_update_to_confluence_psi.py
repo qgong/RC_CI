@@ -49,7 +49,7 @@ class CollectAllReportsAndUpdateToConfluence():
     self.add_page_to_confluence()
 
 if __name__ == "__main__":
-  #time.sleep(36000)
+  time.sleep(36000)
   if len(sys.argv) < 8:
     raise ci3_error.CollectAllReportsAndAddToConfluenceInputError
   else:
