@@ -130,7 +130,7 @@ if __name__== "__main__":
 	username = os.environ.get('ET_Perf_User') or sys.argv[3]
 	password = os.environ.get('ET_Perf_User_Password') or sys.argv[4]
 	baseline_job_id = sys.argv[5]
-	et_rc_version = sys.argv[-1]
+	et_rc_version = os.system('curl http://errata-stage-perf.host.stage.eng.bos.redhat.com/system_version.json').split('.')[-2]
 	#print et_rc_version
 	if testing_type == "smoke":
 		talk_to_jenkinks_smoke = TalktoPerfCI(username, password, "ET_Baseline_PDI_MIN", 5, 2, baseline_job_id, et_rc_version)
