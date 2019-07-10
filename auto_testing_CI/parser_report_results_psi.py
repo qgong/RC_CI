@@ -34,9 +34,9 @@ class TalkToJennkinsToParserResult():
     self.get_testing_report_content()
     print "==== Parsering the build testing reprot ===="
     self.parser_builds_report()
+    print self.et_build_version
     print self.testing_final_result
     print self.testing_final_summary
-    print self.et_build_version
 
 
 if __name__ == "__main__":
