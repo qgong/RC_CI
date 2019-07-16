@@ -31,15 +31,13 @@ class TalkToJennkinsToParserResult():
     self.testing_final_summary = build_parser.brief_summary
 
   def run_parser(self):
-    print "==== Getting the testing report content ===="
     self.get_testing_report_content()
-    print "==== Parsering the build testing reprot ===="
     self.parser_builds_report()
 
   def generate_report_body(self):
     report_link = "https://docs.engineering.redhat.com/display/PDT/ET+Testing+Reports+For+Build+{}".format(
       self.et_build_version)
-    self.report_body = '''
+    self.final_report_body = '''
     <p style='font-family:arial'>
     <p>ET Version: {}</p>
     <p>Testing Result: {}</p>
