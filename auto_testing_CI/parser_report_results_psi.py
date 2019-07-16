@@ -46,6 +46,7 @@ class TalkToJennkinsToParserResult():
     </p>
     '''.format(self.et_build_version, self.testing_final_result,
          self.testing_final_summary, report_link, self.title)
+    print "Testing Report for Build {}--{}".format(self.et_build_version, self.testing_final_result)
     print self.final_report_body
 
 
