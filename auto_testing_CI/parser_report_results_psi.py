@@ -13,10 +13,11 @@ class TalkToJennkinsToParserResult():
     self.title = title
     self.space = space
     self.confluence_auto_client = confluence_client.ConfluenceClient(
-        self.confluence_username, self.confluence_password, self.title, self.space, "", "")
+      self.confluence_username, self.confluence_password, self.title, self.space, "", "")
     self.testing_report_content = ""
     self.testing_final_result = ""
     self.testing_final_summary = ""
+    self.final_report_body = ""
 
   def get_testing_report_content(self):
     self.confluence_auto_client.get_page_content()
@@ -24,7 +25,7 @@ class TalkToJennkinsToParserResult():
 
   def parser_builds_report(self):
     build_parser = parser_build_testing_report.ParserBuildTestingReport(
-        self.testing_report_content)
+      self.testing_report_content)
     build_parser.get_final_status_and_brief()
     self.testing_final_result = build_parser.final_result
     self.testing_final_summary = build_parser.brief_summary
@@ -34,9 +35,20 @@ class TalkToJennkinsToParserResult():
     self.get_testing_report_content()
     print "==== Parsering the build testing reprot ===="
     self.parser_builds_report()
-    print self.et_build_version
-    print self.testing_final_result
-    print self.testing_final_summary
+
+  def generate_report_body(self):
+    report_link = "https://docs.engineering.redhat.com/display/PDT/ET+Testing+Reports+For+Build+{}".format(
+      self.et_build_version)
+    self.report_body = '''
+    <p style='font-family:arial'>
+    <p>ET Version: {}</p>
+    <p>Testing Result: {}</p>
+    <p>Testing Summary: {}</p>
+    <p>Testing Report: <a href="{}">{}</a></p>
+    </p>
+    '''.format(self.et_build_version, self.testing_final_result,
+         self.testing_final_summary, report_link, self.title)
+    print self.final_report_body
 
 
 if __name__ == "__main__":
@@ -46,5 +58,6 @@ if __name__ == "__main__":
   title = sys.argv[4]
   space = sys.argv[5]
   parser = TalkToJennkinsToParserResult(
-      confluence_username, confluence_password, et_build_version, title, space)
+    confluence_username, confluence_password, et_build_version, title, space)
   parser.run_parser()
+  parser.generate_report_body()
