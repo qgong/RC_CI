@@ -20,7 +20,6 @@ class TalkToRCCIForLatestTargetBuild():
 
     def get_builds_numbers(self):
         today_date = os.popen('date | cut -d " " -f 2-3').read().strip('\n')
-        today_date = 'Jul 17'
         builds_numbers_cmd = "curl {}/job/{}/changes | grep -b1 \"({}\" | grep '#' | cut -d '#' -f 2".format(RC_Jenkins, self.build_name, today_date)
         write_builds_number_cmd = "{} > builds_numbers".format(builds_numbers_cmd)
         os.system(write_builds_number_cmd)
