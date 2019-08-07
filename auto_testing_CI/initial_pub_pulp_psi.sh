@@ -86,31 +86,31 @@ check_and_initialize_pub() {
     echo "== Done for ${pub_server}"
   else
     pub_deploy=true
-      echo "== we need to update the pub version =="
-      pub_product_version=$( echo ${pub_product} | cut -d "-" -f 3- | cut -d '.' -f 1-3 )
-        echo "== will initialize the pub server with pub version ${pub_product_version}"
-      pub_installed_version=$( echo ${pub_installed} |  cut -d "-" -f 3- | cut -d '.' -f 1-3 )
-      pub_product_sub_version=$( echo ${pub_product_version} | cut -d '-' -f 2 )
-      pub_product_ansible_version=$( echo ${pub_product_version} | cut -d '-' -f 1 | cut -d '-' -f 1)
-      if [[ ${pub_product_sub_version} -gt 1 ]]; then
-        pub_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pub ${CI3_WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_version=${pub_product_ansible_version} -e pub_release=${pub_product_sub_version}"
-      else
-        pub_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pub ${CI3_WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_version=${pub_product_ansible_version}"
-      fi
-        pub_product_version_integer=$(echo ${pub_product_version} | sed "s/[^0-9]*//g")
-        pub_installed_version_integer=$(echo ${pub_installed_version} | sed "s/[^0-9]*//g" | cut -c 1-${#pub_product_version_integer})
-        echo "== Compare the current installed pub version with the production version =="
-        echo "== installed vs production: ${pub_installed_version_integer} vs ${pub_product_version_integer} =="
-      if [[ ${pub_installed_version_integer} -gt ${pub_product_version_integer} ]]; then
-        echo "== Downgrade Reminder: The installed pub is newer than production, we need to downgrade it =="
-        pub_ansible="${pub_ansible} -e pub_downgrade=true"
-      fi
+    echo "== we need to update the pub version =="
+    pub_product_version=$( echo ${pub_product} | cut -d "-" -f 3- | cut -d '.' -f 1-3 )
+    echo "== will initialize the pub server with pub version ${pub_product_version}"
+    pub_installed_version=$( echo ${pub_installed} |  cut -d "-" -f 3- | cut -d '.' -f 1-3 )
+    pub_product_sub_version=$( echo ${pub_product_version} | cut -d '-' -f 2 )
+    pub_product_ansible_version=$( echo ${pub_product_version} | cut -d '-' -f 1 | cut -d '-' -f 1)
+    if [[ ${pub_product_sub_version} > 1 ]]; then
+      pub_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pub ${CI3_WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_version=${pub_product_ansible_version} -e pub_release=${pub_product_sub_version}"
+    else
+      pub_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pub ${CI3_WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_version=${pub_product_ansible_version}"
+    fi
+    pub_product_version_integer=$(echo ${pub_product_version} | sed "s/[^0-9]*//g")
+    pub_installed_version_integer=$(echo ${pub_installed_version} | sed "s/[^0-9]*//g" | cut -c 1-${#pub_product_version_integer})
+    echo "== Compare the current installed pub version with the production version =="
+    echo "== installed vs production: ${pub_installed_version_integer} vs ${pub_product_version_integer} =="
+    if [[ ${pub_installed_version_integer} > ${pub_product_version_integer} ]]; then
+      echo "== Downgrade Reminder: The installed pub is newer than production, we need to downgrade it =="
+      pub_ansible="${pub_ansible} -e pub_downgrade=true"
+    fi
   fi
   if [[ ${pub_deploy} == "true" ]]; then
     echo "Ansible: ${pub_ansible}"
     cd ${CI3_WORKSPACE}
-	${pub_ansible}
-	cd -
+    ${pub_ansible}
+    cd -
     echo "== Now the pub installed is: =="
     echo $( get_build_installed_on_server ${pub_server} pub-hub )
   fi
@@ -138,7 +138,7 @@ check_and_initialize_pulp_rpm() {
     pulp_for_rpm_installed_integer=$(echo ${pulp_for_rpm_installed} | sed "s/[^0-9]*//g" | cut -c "1-${#pulp_for_rpm_production_integer}")
     echo "== Compare the current installed pulp_for_rpm version with the production version =="
     echo "== installed vs production: ${pulp_for_rpm_installed_integer} vs ${pulp_for_rpm_production_integer} =="
-    if [[ ${pulp_for_rpm_installed_integer} -gt ${pulp_for_rpm_production_integer} ]];then
+    if [[ ${pulp_for_rpm_installed_integer} > ${pulp_for_rpm_production_integer} ]];then
       echo "== Downgrade Reminder: The installed pulp_for_rpm is newer than production, we need to downgrade it =="
       pulp_for_rpm_ansible="${pulp_for_rpm_ansible} -e pulp_downgrade=true"
     fi
@@ -161,7 +161,7 @@ check_and_initialize_pulp_rpm() {
     pulp_rpm_installed_integer=$(echo ${pulp_rpm_installed}   | sed "s/[^0-9]*//g" | cut -c "1-${#pulp_rpm_production_integer}")
     echo "== Compare the current installed pulp_rpm version with the production version =="
     echo "== installed vs production: ${pulp_rpm_installed_integer} vs ${pulp_rpm_production_integer} =="
-    if [[ ${pulp_rpm_installed_integer} -gt ${pulp_rpm_production_integer} ]];then
+    if [[ ${pulp_rpm_installed_integer} > ${pulp_rpm_production_integer} ]];then
       echo "== Downgrade Reminder: The installed pulp_rpm is newer than production, we need to downgrade it =="
       pulp_rpm_ansible="${pulp_rpm_ansible} -e pulp_downgrade=true"
     fi
@@ -172,8 +172,8 @@ check_and_initialize_pulp_rpm() {
     if [[ ${pulp_for_rpm_deploy} == "true" ]] || [[ ${pulp_rpm_deploy} == "true" ]] ; then
       echo "== Ansible: ${pulp_rpm_server_ansible} =="
       cd ${CI3_WORKSPACE}
-	  ${pulp_rpm_server_ansible}
-	  cd -
+      ${pulp_rpm_server_ansible}
+      cd -
       echo "== Now the pulp-rpm related builds installed are:"
       echo $( get_build_installed_on_server ${pulp_rpm_server}  pulp-server )
       echo $( get_build_installed_on_server ${pulp_rpm_server} pulp-rpm-plugins)
@@ -203,7 +203,7 @@ check_and_initialize_pulp_docker() {
     pulp_for_docker_installed_integer=$(echo ${pulp_for_docker_installed} | sed "s/[^0-9]*//g" | cut -c "1-${#pulp_for_docker_production_integer}")
     echo "== Compare the current installed pulp_for_docker version with the production pulp version =="
     echo "== installed vs production: ${pulp_for_docker_installed_integer} vs ${pulp_for_docker_production_integer} =="
-    if [[ ${pulp_for_docker_installed_integer} -gt ${pulp_for_docker_production_integer} ]];then
+    if [[ ${pulp_for_docker_installed_integer} > ${pulp_for_docker_production_integer} ]];then
       echo "== Downgrade Reminder: The installed pulp_for_docker is newer than production, we need to downgrade it =="
       pulp_for_docker_ansible="${pulp_for_docker_ansible} -e pulp_downgrade=true"
     fi
@@ -225,7 +225,7 @@ check_and_initialize_pulp_docker() {
     pulp_docker_installed_integer=$(echo ${pulp_docker_installed}   | sed "s/[^0-9]*//g" | cut -c "1-${#pulp_docker_production_integer}")
     echo "== Compare the current installed pulp_docker version with the production pulp version =="
     echo "== installed vs production: ${pulp_docker_installed_integer} vs ${pulp_docker_production_integer} =="
-    if [[ ${pulp_docker_installed_integer} -gt ${pulp_docker_production_integer} ]];then
+    if [[ ${pulp_docker_installed_integer} > ${pulp_docker_production_integer} ]];then
       pulp_docker_ansible="${pulp_docker_ansible} -e pulp_downgrade=true"
     fi
   fi
