@@ -92,7 +92,7 @@ check_and_initialize_pub() {
     pub_installed_version=$( echo ${pub_installed} |  cut -d "-" -f 3- | cut -d '.' -f 1-3 )
     pub_product_sub_version=$( echo ${pub_product_version} | cut -d '-' -f 2 )
     pub_product_ansible_version=$( echo ${pub_product_version} | cut -d '-' -f 1 | cut -d '-' -f 1)
-    if [[ ${pub_product_sub_version} > 1 ]]; then
+    if [[ ${pub_product_sub_version} -gt 1 ]]; then
       pub_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pub ${CI3_WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_version=${pub_product_ansible_version} -e pub_release=${pub_product_sub_version}"
     else
       pub_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pub ${CI3_WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_version=${pub_product_ansible_version}"
@@ -109,8 +109,10 @@ check_and_initialize_pub() {
   if [[ ${pub_deploy} == "true" ]]; then
     echo "Ansible: ${pub_ansible}"
     cd ${CI3_WORKSPACE}
+    pwd
     ${pub_ansible}
     cd -
+
     echo "== Now the pub installed is: =="
     echo $( get_build_installed_on_server ${pub_server} pub-hub )
   fi
@@ -172,8 +174,10 @@ check_and_initialize_pulp_rpm() {
     if [[ ${pulp_for_rpm_deploy} == "true" ]] || [[ ${pulp_rpm_deploy} == "true" ]] ; then
       echo "== Ansible: ${pulp_rpm_server_ansible} =="
       cd ${CI3_WORKSPACE}
+      pwd
       ${pulp_rpm_server_ansible}
       cd -
+
       echo "== Now the pulp-rpm related builds installed are:"
       echo $( get_build_installed_on_server ${pulp_rpm_server}  pulp-server )
       echo $( get_build_installed_on_server ${pulp_rpm_server} pulp-rpm-plugins)
@@ -235,6 +239,7 @@ check_and_initialize_pulp_docker() {
     if [[ ${pulp_docker_deploy} == "true" ]] || [[ ${pulp_for_docker_deploy} == "true" ]];then
       echo "== Ansible: ${pulp_docker_server_ansible} =="
       cd ${CI3_WORKSPACE}
+      pwd
       ${pulp_docker_server_ansible}
       cd -
      
