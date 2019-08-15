@@ -31,7 +31,7 @@ def get_issue_and_format_issue(issue):
     regex = re.compile('[^a-zA-Z0-9 _\?\[\]{}()]')
     summary = regex.sub('', issue.fields.summary)
 
-    finished_testing_issues_status = ['Resolved','Closed','Done','Verified']
+    finished_testing_issues_status = ['Resolved','Closed','Done','Verified', 'Release_pending']
 
     # customfield_13700 is customed qe_auto_coverage
     if issue.fields.customfield_13700:
@@ -65,7 +65,7 @@ def get_issues_and_format_issues(user, password, fix_version):
     for issue in issues_list:
         formatted_issues.append(get_issue_and_format_issue(issue))
 
-    autoproposal_jira_list = jira.search_issues('project = ERRATA AND QE_AUTO_Coverage = "?"')
+    autoproposal_jira_list = jira.search_issues('project = ERRATA AND status = Closed AND QE_AUTO_Coverage = "?" AND fixVersion != ' + fix_version)
     for issue in autoproposal_jira_list:
         formatted_issues.append(get_issue_and_format_issue(issue))
 
@@ -90,7 +90,7 @@ def get_formatted_manual_issues_list(issues_list):
 def get_formatted_autoproposal_issue_list(issues_list):
     formatted_autoproposal_issues = []
     for issue in issues_list:
-        if issue[5] == "?":
+        if issue[7] != "PASSED" and issue[5] == "?":
             formatted_autoproposal_issues.append(issue)
     return formatted_autoproposal_issues
 
@@ -149,6 +149,7 @@ def generate_confluence_page_for_issues(user, password, fix_version):
     page_notice_html = "<p>" + page_notice + "</p>"
     html = page_notice_html + info_for_manual_testing_html + formatted_manual_issues_html + info_for_autoproposal_testing_html + formatted_autoproposal_issues_html + info_for_automated_testing_html + formatted_automated_issues_html
     write_page_file(html)
+    #print html
     print "Done!"
 
 
