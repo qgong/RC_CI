@@ -60,7 +60,6 @@ def get_issues_and_format_issues(user, password, fix_version):
     jira = JIRA(jira_url, basic_auth=(user, password))
 
     issues_list = jira.search_issues('project = ERRATA AND fixVersion = ' + fix_version)
-    print issues_list
     formatted_issues = []
     for issue in issues_list:
         formatted_issues.append(get_issue_and_format_issue(issue))
