@@ -48,9 +48,9 @@ def get_issue_and_format_issue(issue):
         issue_component = ''
 
     if issue.fields.customfield_11704:
-    	issue_qe_contact = issue.fields.customfield_11704.name
+        issue_qe_contact = issue.fields.customfield_11704.name
     else:
-    	issue_qe_contact = ''
+        issue_qe_contact = ''
 
     formatted_issue = [ issue.key, summary, issue_component, issue.fields.priority.name, issue.fields.status.name, issue_qe_auto_coverage, issue_qe_contact, issue_result ]
     return formatted_issue
@@ -60,9 +60,15 @@ def get_issues_and_format_issues(user, password, fix_version):
     jira = JIRA(jira_url, basic_auth=(user, password))
 
     issues_list = jira.search_issues('project = ERRATA AND fixVersion = ' + fix_version)
+    print issues_list
     formatted_issues = []
     for issue in issues_list:
         formatted_issues.append(get_issue_and_format_issue(issue))
+
+    autoproposal_jira_list = jira.search_issues('project = ERRATA AND QE_AUTO_Coverage = "?"')
+    for issue in autoproposal_jira_list:
+        formatted_issues.append(get_issue_and_format_issue(issue))
+
     return formatted_issues
 
 # get all passed jira for the second table
@@ -77,10 +83,16 @@ def get_formatted_automated_issues_list(issues_list):
 def get_formatted_manual_issues_list(issues_list):
     formatted_manual_issues = []
     for issue in issues_list:
-        if issue[7] != "PASSED":
+        if issue[7] != "PASSED" and issue[5] != "?":
             formatted_manual_issues.append(issue)
     return formatted_manual_issues
 
+def get_formatted_autoproposal_issue_list(issues_list):
+    formatted_autoproposal_issues = []
+    for issue in issues_list:
+        if issue[5] == "?":
+            formatted_autoproposal_issues.append(issue)
+    return formatted_autoproposal_issues
 
 def generate_page_content(formatted_issues_list):
     table_column = ['ID', 'Summary', 'Component', 'Priority', 'Status', 'qe_auto_coverage', 'QAOwner', 'Result']
@@ -116,18 +128,26 @@ def generate_confluence_page_for_issues(user, password, fix_version):
     formatted_issues_list = get_issues_and_format_issues(user, password, fix_version)
     formatted_automated_issues = get_formatted_automated_issues_list(formatted_issues_list)
     formatted_manual_issues = get_formatted_manual_issues_list(formatted_issues_list)
+    formatted_autoproposal_issues = get_formatted_autoproposal_issue_list(formatted_issues_list)
     print "-----generate for automated issues---"
     formatted_automated_issues_html = generate_page_content(formatted_automated_issues)
     formatted_manual_issues_html = generate_page_content(formatted_manual_issues)
+    formatted_autoproposal_issues_html = generate_page_content(formatted_autoproposal_issues)
     #info_for_manual_testing = "[Warning] jiras in the following table have not been covered by automated testing, please verify them manually!"
     #info_for_automated_testing = "[Warning] jiras in the following table have been covered by automated testing! No more verification needed!"
-    info_for_manual_testing_html = '<p>' + "'' and '?' of 'qe_auto_coverage' of the following table means QE have not finished the automation tasks of the jira issues." + "<strong>" + " Manual testing is needed! " + "</strong></p>"
-    info_for_automated_testing_html = "<p>" + "'-' of 'qe_auto_coverage' of the following table means QE have confirmed that "+ "<strong>" + "no more manual testing is needed." + "</strong>" + " For dev's autoated testing has been covered or it is minor UI change or unimportant negative case can be ingored! "+ '<strong>' + "Mark as 'PASSED' directly!" +'</strong></p>'
-    info_for_automated_testing_html += "<p>" + "'+' means QE have completed the automation tasks."  + "<strong>" + "TS2.0 has been covered it. Mark as PASSED directly!" + "</strong></p>"
+    info_for_manual_testing_html = "<p><strong>Table 1</strong>: The JIRA issues with unset 'qe_auto_coverage' or under testing status in the current  RC build.</p>"
+    info_for_manual_testing_html += "<p><strong>Manual testing is needed! The value of 'qe_auto_coverage' should be set!</strong></p>"
+
+    info_for_autoproposal_testing_html = "<p><strong>Table 2</strong>: All JIRA issues with '?' in 'qe_auto_coverage' included in the current RC build and released ET versions.</p>"
+    info_for_autoproposal_testing_html += "<p>Case automation is proposed but has not be done yet. <strong>Manual testing is needed! Case automation is needed!</strong></p>"
+
+    info_for_automated_testing_html = "<p><strong>Table 3</strong>: The jira issues with '-' or '+' in 'qe_auto_coverage' in the current RC build.</p>"
+    info_for_automated_testing_html += "<p>'-'  in  'qe_auto_coverage' means QE have confirmed that <strong>no more manual testing is needed</strong>. For dev's automated testing has been covered or it is minor UI change or unimportant negative case can be ingored! <strong>Mark as 'PASSED' directly!</strong></p>"
+    info_for_automated_testing_html += "<p>'+' means QE have completed the automation tasks. UAT has covered them. <strong>Mark as PASSED directly! No more manual testing is needed!</strong></p>"
+
     page_notice = "'qe_auto_coverage' on the page shows QE automation status for jira issues."
     page_notice_html = "<p>" + page_notice + "</p>"
-    html = page_notice_html + info_for_manual_testing_html + formatted_manual_issues_html + info_for_automated_testing_html + formatted_automated_issues_html
-    # print html
+    html = page_notice_html + info_for_manual_testing_html + formatted_manual_issues_html + info_for_autoproposal_testing_html + formatted_autoproposal_issues_html + info_for_automated_testing_html + formatted_automated_issues_html
     write_page_file(html)
     print "Done!"
 
