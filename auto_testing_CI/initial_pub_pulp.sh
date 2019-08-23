@@ -39,7 +39,7 @@ get_build_installed_on_server() {
 
 upgrade_pub_pulp_tools_on_server(){
 	echo "Upgrading the 'rhsm-tools' and 'cdn-utils' on the pub and pulp servers"
-	ssh root@${1} "yum upgrade -y rhsm-tools && yum upgrade -y cdn-utils"
+	ssh root@${1} "if [[ $(cat /etc/redhat-release) =~ 'release 7' ]]; then   yum --enablerepo=eng-rhel-7 upgrade -y rhsm-tools cdn-utils; else   yum --enablerepo=eng-rhel-6 upgrade -y rhsm-tools cdn-utils;  fi"
 }
 
 initialize_ansible_related_varables(){
