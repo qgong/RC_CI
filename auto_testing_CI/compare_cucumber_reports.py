@@ -41,4 +41,4 @@ if __name__ == "__main__":
   build_name = sys.argv[3]
   report = sys.argv[4]
   compare_report = CompareCucumberReports(username, password, build_name, report)
-  compare_report.compare_cases_num()
+  compare_report.run_comparison()
