@@ -14,7 +14,6 @@ prepare_and_update_private_key_for_ansible() {
   chmod 700 ${CI3_WORKSPACE}/id_rsa
   sed -i "/defaults\]/a private_key_file=${CI3_WORKSPACE}/id_rsa" ${CI3_WORKSPACE}/ansible.cfg
   sed -i "s/ignore/False/g" ${CI3_WORKSPACE}/ansible.cfg
-  cat ${CI3_WORKSPACE}/ansible.cfg >> /dev/null
 }
 
 initialize_env(){
@@ -122,8 +121,10 @@ set_docker_registry(){
 
 initialize_env
 prepare_and_update_private_key_for_ansible
-echo "Step 1: Confirm the ansible version ..."
+echo "Step 1: Confirm the ansible version and ansible config ..."
 ansible --version
+cat ${CI3_WORKSPACE}/ansible.cfg
+
 echo "Step 2: Upgrade the pulp/pulp/pulp-docker ..."
 upgrade_pub
 upgrade_pulp_rpm
