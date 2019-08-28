@@ -126,6 +126,7 @@ ansible --version
 cat ${CI3_WORKSPACE}/ansible.cfg
 
 echo "Step 2: Upgrade the pulp/pulp/pulp-docker ..."
+sleep 3600
 upgrade_pub
 upgrade_pulp_rpm
 upgrade_pulp_docker
