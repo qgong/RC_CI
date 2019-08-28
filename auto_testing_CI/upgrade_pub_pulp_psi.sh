@@ -13,8 +13,6 @@ prepare_and_update_private_key_for_ansible() {
   cp  /root/.ssh/id_rsa ${CI3_WORKSPACE}
   chmod 700 ${CI3_WORKSPACE}/id_rsa
   sed -i "/defaults\]/a private_key_file=${CI3_WORKSPACE}/id_rsa" ${CI3_WORKSPACE}/ansible.cfg
-  sed -i "s/ignore/False/g" ${CI3_WORKSPACE}/ansible.cfg
-  export ANSIBLE_INVALID_TASK_ATTRIBUTE_FAILED=False
 }
 
 initialize_env(){
@@ -27,7 +25,7 @@ upgrade_pub(){
   pub_ansible=""
   if [[ ! -z ${pub_jenkins_build} ]]; then
     echo "== will upgrade the pub env =="
-    pub_ansible="ansible-playbook -c ${CI3_WORKSPACE}/ansible.cfg -u root -i ${CI3_WORKSPACE}/inventory/pub ${CI3_WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_jenkins_build=${pub_jenkins_build}"
+    pub_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pub ${CI3_WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_jenkins_build=${pub_jenkins_build}"
     echo $(pwd)
     echo ${pub_ansible}
     ${pub_ansible}
@@ -60,7 +58,7 @@ upgrade_pulp_rpm(){
   fi
   pulp_rpm_ansible_part="${pulp_build_for_rpm_ansible}${pulp_rpm_build_ansible}${pulp_cdn_distributor_build_ansible}"
   if [[ ! -z ${pulp_rpm_ansible_part} ]]; then
-    pulp_rpm_ansible="ansible-playbook -c ${CI3_WORKSPACE}/ansible.cfg -u root -i ${CI3_WORKSPACE}/inventory/pulp ${CI3_WORKSPACE}/playbooks/pulp/deploy-pulp-rpm-e2e.yml ${pulp_rpm_ansible_part}"
+    pulp_rpm_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pulp ${CI3_WORKSPACE}/playbooks/pulp/deploy-pulp-rpm-e2e.yml ${pulp_rpm_ansible_part}"
     ${pulp_rpm_ansible}
     if [[ $(echo $?) == "0" ]]; then
       echo "== Pulp-rpm is ready =="
@@ -88,7 +86,7 @@ upgrade_pulp_docker(){
   fi
   pulp_docker_ansible_part="${pulp_build_for_docker_ansible}${pulp_docker_build_ansible}"
   if [[ ! -z ${pulp_docker_ansible_part} ]];then
-    pulp_docker_ansible="ansible-playbook -c ${CI3_WORKSPACE}/ansible.cfg -u root -i ${CI3_WORKSPACE}/inventory/pulp ${CI3_WORKSPACE}/playbooks/pulp/deploy-pulp-docker-e2e.yml ${pulp_rpm_ansible_part}"
+    pulp_docker_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pulp ${CI3_WORKSPACE}/playbooks/pulp/deploy-pulp-docker-e2e.yml ${pulp_rpm_ansible_part}"
     ${pulp_docker_ansible}
     if [[ $(echo $?) == "0" ]]; then
       echo "== Pulp-docker is ready =="
@@ -123,8 +121,8 @@ set_docker_registry(){
 initialize_env
 prepare_and_update_private_key_for_ansible
 echo "Step 1: Confirm the ansible version and ansible config ..."
+cd ${CI3_WORKSPACE}
 ansible --version
-cat ${CI3_WORKSPACE}/ansible.cfg
 
 echo "Step 2: Upgrade the pulp/pulp/pulp-docker ..."
 upgrade_pub
