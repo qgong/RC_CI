@@ -13,6 +13,7 @@ prepare_and_update_private_key_for_ansible() {
   cp  /root/.ssh/id_rsa ${CI3_WORKSPACE}
   chmod 700 ${CI3_WORKSPACE}/id_rsa
   sed -i "/defaults\]/a private_key_file=${CI3_WORKSPACE}/id_rsa" ${CI3_WORKSPACE}/ansible.cfg
+  sed -i "s/ignore/False/g" ${CI3_WORKSPACE}/ansible.cfg
 }
 
 initialize_env(){
