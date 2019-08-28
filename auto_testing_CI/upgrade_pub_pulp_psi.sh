@@ -26,7 +26,7 @@ upgrade_pub(){
   pub_ansible=""
   if [[ ! -z ${pub_jenkins_build} ]]; then
     echo "== will upgrade the pub env =="
-    pub_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pub ${CI3_WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_jenkins_build=${pub_jenkins_build}"
+    pub_ansible="ansible-playbook -c ${CI3_WORKSPACE}/ansible.cfg -u root -i ${CI3_WORKSPACE}/inventory/pub ${CI3_WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_jenkins_build=${pub_jenkins_build}"
     echo $(pwd)
     echo ${pub_ansible}
     ${pub_ansible}
@@ -59,7 +59,7 @@ upgrade_pulp_rpm(){
   fi
   pulp_rpm_ansible_part="${pulp_build_for_rpm_ansible}${pulp_rpm_build_ansible}${pulp_cdn_distributor_build_ansible}"
   if [[ ! -z ${pulp_rpm_ansible_part} ]]; then
-    pulp_rpm_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pulp ${CI3_WORKSPACE}/playbooks/pulp/deploy-pulp-rpm-e2e.yml ${pulp_rpm_ansible_part}"
+    pulp_rpm_ansible="ansible-playbook -c ${CI3_WORKSPACE}/ansible.cfg -u root -i ${CI3_WORKSPACE}/inventory/pulp ${CI3_WORKSPACE}/playbooks/pulp/deploy-pulp-rpm-e2e.yml ${pulp_rpm_ansible_part}"
     ${pulp_rpm_ansible}
     if [[ $(echo $?) == "0" ]]; then
       echo "== Pulp-rpm is ready =="
@@ -87,7 +87,7 @@ upgrade_pulp_docker(){
   fi
   pulp_docker_ansible_part="${pulp_build_for_docker_ansible}${pulp_docker_build_ansible}"
   if [[ ! -z ${pulp_docker_ansible_part} ]];then
-    pulp_docker_ansible="ansible-playbook -u root -i ${CI3_WORKSPACE}/inventory/pulp ${CI3_WORKSPACE}/playbooks/pulp/deploy-pulp-docker-e2e.yml ${pulp_rpm_ansible_part}"
+    pulp_docker_ansible="ansible-playbook -c ${CI3_WORKSPACE}/ansible.cfg -u root -i ${CI3_WORKSPACE}/inventory/pulp ${CI3_WORKSPACE}/playbooks/pulp/deploy-pulp-docker-e2e.yml ${pulp_rpm_ansible_part}"
     ${pulp_docker_ansible}
     if [[ $(echo $?) == "0" ]]; then
       echo "== Pulp-docker is ready =="
@@ -126,7 +126,6 @@ ansible --version
 cat ${CI3_WORKSPACE}/ansible.cfg
 
 echo "Step 2: Upgrade the pulp/pulp/pulp-docker ..."
-sleep 3600
 upgrade_pub
 upgrade_pulp_rpm
 upgrade_pulp_docker
