@@ -108,7 +108,7 @@ class GenerateRCReportContent():
 
   def generate_rc_report_for_current_rc_version(self):
     if self.test_type in ['Bug Regression Testing', 'Performance Baseline Testing']:
-      if self.expected_rc_version == self.current_rc_version:
+      if self.expected_rc_version == self.current_rc_version and self.test_report != ['', '', '']:
         self.generate_rc_report_content()
       else:
         print "Expect ET Version: " + self.expected_rc_version
