@@ -64,27 +64,28 @@ class GenerateRCReportContent():
   def generate_test_report_row_html(self):
     test_table_row_content_body = ""
     self.test_report_row_html = ""
-    for item in self.test_report:
-      if item == "PASSED" or item == "SUCCESS":
-        test_table_row_content_body += "<td>" + \
-            "<strong><span style='color: rgb(0,128,0);'>" + \
-            "PASSED" + "</span></strong>" + "</td>"
-      if item.find("FAILED") > -1:
-        test_table_row_content_body += "<td>" + \
-            "<strong><span style='color: rgb(255,0,0);'>" + \
-            item + "</span></strong>" + "</td>"
-      if item == "IN PROGRESS":
-        test_table_row_content_body += "<td>" + \
-            "<strong><span style='color: rgb(255,204,0);'>" + \
-            item + "</span></strong>" + "</td>"
-      if item.find("http") > -1:
-        test_table_row_content_body += "<td>" + "<a href='" + \
-            item + "'>" + item + "</a>" + "</td>"
-      if item.find("Testing") > -1 and item.find("http") < 0:
-        test_table_row_content_body += "<td>" + item + "</td>"
-    test_table_row_content_body += "<td>" + \
-        self.env_options[self.test_type] + "</td>"
-    self.test_report_row_html = "<tr>" + test_table_row_content_body + "</tr>"
+    if self.test_report != ['', '', '']:
+      for item in self.test_report:
+        if item == "PASSED" or item == "SUCCESS":
+          test_table_row_content_body += "<td>" + \
+              "<strong><span style='color: rgb(0,128,0);'>" + \
+              "PASSED" + "</span></strong>" + "</td>"
+        if item.find("FAILED") > -1:
+          test_table_row_content_body += "<td>" + \
+              "<strong><span style='color: rgb(255,0,0);'>" + \
+              item + "</span></strong>" + "</td>"
+        if item == "IN PROGRESS":
+          test_table_row_content_body += "<td>" + \
+              "<strong><span style='color: rgb(255,204,0);'>" + \
+              item + "</span></strong>" + "</td>"
+        if item.find("http") > -1:
+          test_table_row_content_body += "<td>" + "<a href='" + \
+              item + "'>" + item + "</a>" + "</td>"
+        if item.find("Testing") > -1 and item.find("http") < 0:
+          test_table_row_content_body += "<td>" + item + "</td>"
+      test_table_row_content_body += "<td>" + \
+          self.env_options[self.test_type] + "</td>"
+      self.test_report_row_html = "<tr>" + test_table_row_content_body + "</tr>"
 
   def generate_test_report_html(self):
     self.update_e2e_env_with_pub_pulp()
@@ -108,7 +109,7 @@ class GenerateRCReportContent():
     print "===End to genreate test report content===="
 
   def generate_rc_report_for_current_rc_version(self):
-    if self.test_type in ['Bug Regression Testing', 'Performance Baseline Testing'] and self.test_report != ['', '', '']:
+    if self.test_type in ['Bug Regression Testing', 'Performance Baseline Testing']:
       if self.expected_rc_version == self.current_rc_version:
         self.generate_rc_report_content()
       else:
