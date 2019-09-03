@@ -63,6 +63,7 @@ class GenerateRCReportContent():
 
   def generate_test_report_row_html(self):
     test_table_row_content_body = ""
+    self.test_report_row_html = ""
     for item in self.test_report:
       if item == "PASSED" or item == "SUCCESS":
         test_table_row_content_body += "<td>" + \
