@@ -124,7 +124,7 @@ echo "Step 1: Confirm the ansible version and ansible config ..."
 cd ${CI3_WORKSPACE}
 ansible --version
 
-echo "Step 2: Upgrade the pulp/pulp/pulp-docker ..."
+echo "Step 2: Upgrade the pub/pulp/pulp-docker ..."
 upgrade_pub
 upgrade_pulp_rpm
 upgrade_pulp_docker
