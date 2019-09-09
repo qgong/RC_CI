@@ -104,7 +104,7 @@ check_and_initialize_pub() {
     if [[ ${pub_installed_version_integer} > ${pub_product_version_integer} ]]; then
       echo "== Downgrade Reminder: The installed pub is newer than production, we need to downgrade it =="
       pub_ansible="${pub_ansible} -e pub_downgrade=true"
-    elif [[ ${pub_installed_version_integer} -eq ${pub_product_version_integer} ]] && [[ ${pub_installed_version} =~ 'git' ]]; then
+    elif [[ ${pub_installed_version_integer} -eq ${pub_product_version_integer} ]] && [[ ${pub_installed} =~ 'git' ]]; then
       echo "== Pub RC build is installed, we need to downgrade it to the product version"
       pub_ansible="${pub_ansible} -e pub_downgrade=true"
     fi
