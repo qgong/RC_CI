@@ -16,9 +16,9 @@ export pulp_version_url="https://gitolite.corp.redhat.com/cgit/puppet-cfg/module
 export pulp_docker_url="https://gitolite.corp.redhat.com/cgit/puppet-cfg/modules/pulp.git/plain/data/docker-pulp-rpm-versions.yaml"
 
 install_scripts_env() {
-   pip install --user --upgrade pip
-   pip install --user confluence-py
-   pip install --user python-jenkins
+   pip install --user --upgrade pip==19.2.3
+   pip install --user confluence-py==1.0.1
+   pip install --user python-jenkins==1.5.0
 }
 
 get_all_product_versions_content() {
