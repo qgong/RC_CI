@@ -3,8 +3,8 @@ set -eo pipefail
 IFS=$'\n\t'
 
 install_scripts_env(){
-	pip install --upgrade pip
-	pip install confluence-py
+	pip install --upgrade pip==19.2.3
+	pip install confluence-py==1.0.1
 	pip install python-jenkins==0.4.16
 	pip install scp
 	yum install wget -y

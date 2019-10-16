@@ -9,8 +9,8 @@ pulp_version_url=https://gitolite.corp.redhat.com/cgit/puppet-cfg/modules/pulp.g
 pulp_docker_url=https://gitolite.corp.redhat.com/cgit/puppet-cfg/modules/pulp.git/plain/data/docker-pulp-rpm-versions.yaml
 
 install_scripts_env() {
-	 pip install --upgrade pip
-	 pip install confluence-py
+	 pip install --upgrade pip==19.2.3
+	 pip install confluence-py==1.0.1
 	 pip install python-jenkins
 	if [[ $(wget --version | head -1) =~ "GNU Wget" ]]; then
 		echo "=====wget has been installed======";
