@@ -1,5 +1,5 @@
 install_scripts_env() {
-  pip install --user --upgrade pip
+  python -m pip install --user --upgrade pip
   pip install --user python-jenkins==0.4.16
   pip install --user dateutils==0.6.6
   pip install --user requests==2.22.0
