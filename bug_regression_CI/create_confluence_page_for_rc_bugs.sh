@@ -1,6 +1,6 @@
 #!/bin/bash
 # The script can be used locally to generate rc bug regression
-#sudo pip install confluence-py
+#sudo pip install confluence-py==1.0.1
 #sudo pip install bugzilla
 #sudo pip install requests
 user=$2
@@ -13,8 +13,8 @@ confluence_username=${user}
 et_build_name=${name}
 
 # Prepare the env (install wget, and python packages) to run the script
-sudo pip install --upgrade pip
-sudo pip install confluence-py
+sudo pip install --upgrade pip==19.2.3
+sudo pip install confluence-py==1.0.1
 sudo pip install bugzilla
 sudo pip install python-bugzilla
 sudo pip install requests

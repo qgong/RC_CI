@@ -3,8 +3,8 @@
 # Initial the env to run the 'talk_to_robot_framework_jenkins' python script
 
 install_scripts_env() {
-	sudo pip install --upgrade pip
-	sudo pip install confluence-py
+	sudo pip install --upgrade pip==19.2.3
+	sudo pip install confluence-py==1.0.1
 	sudo pip install python-jenkins
 	if [[ $(wget --version | head -1) =~ "GNU Wget" ]]; then
 		echo "=====wget has been installed======";
