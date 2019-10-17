@@ -90,7 +90,7 @@ perf_restore_db() {
   if [[ "${1}" =~ "perf"  ]]
   then
     echo "=== [INFO] === Restoring the perf db"
-    ssh  root@errata-stage-perf-db.host.stage.eng.bos.redhat.com "cd /var/opt/rh/rh-mariadb102/lib;./restore_db.sh"
+    ssh -o "StrictHostKeyChecking no" -i /root/.ssh/id_pub root@errata-stage-perf-db.host.stage.eng.bos.redhat.com "cd /var/opt/rh/rh-mariadb102/lib;./restore_db.sh"
   fi
 }
 
