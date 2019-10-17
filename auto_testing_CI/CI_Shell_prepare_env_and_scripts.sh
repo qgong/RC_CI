@@ -1,6 +1,6 @@
 install_scripts_env() {
-  pip install --user --upgrade pip
-  pip install --user python-jenkins==0.4.16
+  pip install --user --upgrade pip==19.2.3
+  pip install --user python-jenkins==1.5.0
   pip install --user dateutils==0.6.6
   pip install --user requests==2.22.0
   pip install --user requests-kerberos==0.11.0
@@ -11,7 +11,7 @@ install_scripts_env() {
   pip install --user jira==2.0.0
   pip install --user paramiko==2.6.0
   pip install --user scp==0.13.2
-  pip install --user confluence-py
+  pip install --user confluence-py==1.0.1
 }
 prepare_scripts(){
   mkdir -p ${1}

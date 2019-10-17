@@ -6,8 +6,8 @@ bugzilla_username="${username}@redhat.com"
 confluence_username=${username}
 echo "The bugzilla account is ${bugzilla_username}, the confluence account is ${confluence_username}"
 #3. first install the confluence-py, bugzilla module and wget package, then get and run script to generate the conflunce content for the bug page, finally create the page on confluence
-sudo pip install --upgrade pip
-sudo pip install confluence-py
+sudo pip install --upgrade pip==19.2.3
+sudo pip install confluence-py==1.0.1
 sudo pip install bugzilla
 sudo pip install python-bugzilla
 sudo pip install requests
