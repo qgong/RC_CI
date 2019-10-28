@@ -41,7 +41,7 @@ get_deployed_et_id(){
 }
 
 get_ansible_commands_with_product_et_version(){
-  ansible_command_part_1="ansible-playbook -vv --user root --skip-tags 'et-application-config'"
+  ansible_command_part_1="ansible-playbook -vv --user root"
   ansible_command_part_2=" --limit ${1} -e errata_version=${2} -e errata_fetch_brew_build=true"
   ansible_command_part_3=""
   if [[ "${3}" == "downgrade" ]]
@@ -55,7 +55,7 @@ get_ansible_commands_with_product_et_version(){
 
 
 get_ansible_commands_with_build_id(){
-  ansible_command_part_1="ansible-playbook -vv --user root --skip-tags 'et-application-config'"
+  ansible_command_part_1="ansible-playbook -vv --user root"
   ansible_command_part_2=" --limit ${1} -e errata_jenkins_build=${2} "
   ansible_command_part_3=" playbooks/qe/deploy-errata-qe.yml"
   ansible_command="${ansible_command_part_1} ${ansible_command_part_2} ${ansible_command_part_3}"
@@ -63,7 +63,7 @@ get_ansible_commands_with_build_id(){
 }
 
 get_ansible_commands_with_brew_build_id(){
-  ansible_command_part_1="ansible-playbook -vv --user root --skip-tags 'et-application-config'"
+  ansible_command_part_1="ansible-playbook -vv --user root"
   ansible_command_part_2=" --limit ${1} -e errata_version=${2} -e errata_fetch_brew_build=true "
   ansible_command_part_3=" playbooks/qe/deploy-errata-qe.yml"
   ansible_command="${ansible_command_part_1} ${ansible_command_part_2} ${ansible_command_part_3}"
