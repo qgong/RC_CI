@@ -28,15 +28,16 @@ run_ansible(){
 source ${ci_3_workspace}/RC_CI-master/auto_testing_CI/CI_Shell_prepare_env_and_scripts.sh
 source  ${ci_3_workspace}/RC_CI-master/auto_testing_CI/CI_Shell_common_usage.sh
 
+product_raw_et_version=$(get_system_raw_version ${ET_Production_Server} | cut -d "-" -f 1)
+product_et_version=$(get_et_product_version ${ET_Production_Server})
+deployed_et_version=$(get_deployed_et_version ${ET_Testing_Server})
+echo "=== Get following versions:"
+echo "product et version: ${product_et_version}"
+echo "deployed et version: ${deployed_et_version}"
+
 # If you set the et build as empty, It would initail the ET version as the product version
 if [[ -z "${et_build_name_or_id}" ]]; then
   echo "=== Et version is not specified. I would keep the deployed version is the product et version"
-  product_raw_et_version=$(get_system_raw_version ${ET_Production_Server} | cut -d "-" -f 1)
-  product_et_version=$(get_et_product_version ${ET_Production_Server})
-  deployed_et_version=$(get_deployed_et_version ${ET_Testing_Server})
-  echo "=== Get following versions:"
-  echo "product et version: ${product_et_version}"
-  echo "deployed et version: ${deployed_et_version}"
   compare_result=$(compare_version_or_id ${deployed_et_version} ${product_et_version})
   echo "compare_result: ${compare_result}"
   if [[ "${compare_result}" == "same" ]]; then
@@ -81,12 +82,6 @@ else
     restart_service ${ET_Testing_Server}
     exit
   else
-    product_raw_et_version=$(get_system_raw_version ${ET_Production_Server} | cut -d "-" -f 1)
-    product_et_version=$(get_et_product_version ${ET_Production_Server})
-    deployed_et_version=$(get_deployed_et_version ${ET_Testing_Server})
-    echo "=== Get following versions:"
-    echo "product version: ${product_et_version}"
-    echo "deployed et version: ${deployed_et_version}"
     compare_result=$(compare_version_or_id ${deployed_et_version} ${product_et_version})
     echo "compare_result: ${compare_result}"
     if [[ "${compare_result}" == "same" ]]; then
