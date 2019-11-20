@@ -28,7 +28,7 @@ run_ansible(){
 source ${ci_3_workspace}/RC_CI-master/auto_testing_CI/CI_Shell_prepare_env_and_scripts.sh
 source  ${ci_3_workspace}/RC_CI-master/auto_testing_CI/CI_Shell_common_usage.sh
 echo "---> Prepare the user ..."
-psi-jenkins-slave
+psi-jenkins-slave || true
 echo "---> whoami: $(whoami) ..."
 echo "---> Prepare the ssh permision ..."
 prepare_ansible_ssh_permission
