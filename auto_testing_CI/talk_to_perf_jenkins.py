@@ -23,7 +23,7 @@ import subprocess
 
 ET_Perf_Server = os.environ.get(
     "ET_Perf_Server") or "errata-stage-perf.host.stage.eng.bos.redhat.com"
-ET_Stub_Server = os.environ.get("ET_Perf_Stub_Server") or "10.8.248.96"
+ET_Stub_Server = os.environ.get("ET_Perf_Stub_Server") or "mock-e2e.usersys.redhat.com"
 ET_DB_Server = os.environ.get(
     "ET_Perf_DB_Server") or "errata-stage-perf-db.host.stage.eng.bos.redhat.com"
 Perf_Jenkins = os.environ.get(
