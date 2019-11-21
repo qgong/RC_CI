@@ -33,12 +33,12 @@ Perf_Jenkins = os.environ.get(
 class TalktoPerfCI():
     global ET_Perf_Server, ET_Stub_Server, ET_DB_Server, Perf_Jenkins
 
-    def __init__(self, username, password, build_name, expected_run_time, check_loop_time, baseline_job_id, et_rc_version, errata_fetch_brew_build="false"):
+    def __init__(self, username, password, expected_run_time,
+            check_loop_time, baseline_job_name, baseline_job_id, et_rc_version, errata_fetch_brew_build="false"):
         self.username = username
         self.password = password
         self.server = jenkins.Jenkins(
             Perf_Jenkins, username=self.username, password=self.password)
-        self.build_name = os.environ.get('Perf_Build_Name') or build_name
         self.expected_run_time = expected_run_time
         self.check_loop_time = check_loop_time
         self.default_build_number_to_compare = baseline_job_id
@@ -49,6 +49,7 @@ class TalktoPerfCI():
         self.perf_testing_comparison_url = ""
         self.perf_testing_console_url = ""
         self.et_rc_version = et_rc_version
+        self.build_name = baseline_job_name
         self.errata_fetch_brew_build = errata_fetch_brew_build
 
     def get_latest_build_console_log_content(self):
@@ -144,9 +145,10 @@ if __name__ == "__main__":
     perf_expect_run_time = sys.argv[2]
     username = os.environ.get('ET_Perf_User') or sys.argv[3]
     password = os.environ.get('ET_Perf_User_Password') or sys.argv[4]
-    baseline_job_id = sys.argv[5]
-    et_rc_version = sys.argv[6]
-    errata_fetch_brew_build = sys.argv[7]
+    baseline_job_name = sys.argv[5]
+    baseline_job_id = sys.argv(6)
+    et_rc_version = sys.argv[7]
+    errata_fetch_brew_build = sys.argv[8]
 
     # print et_rc_version
     if testing_type == "smoke":
@@ -155,7 +157,8 @@ if __name__ == "__main__":
         talk_to_jenkinks_smoke.run_one_test()
     if testing_type == "full_perf":
         talk_to_jenkinks_smoke = TalktoPerfCI(
-            username, password, "ET_Baseline_PDI", perf_expect_run_time, 2, baseline_job_id, et_rc_version, errata_fetch_brew_build)
+            username, password, perf_expect_run_time, 2,
+            baseline_job_name, baseline_job_id, et_rc_version, errata_fetch_brew_build)
         talk_to_jenkinks_smoke.run_one_test()
     if testing_type == "all":
         talk_to_jenkinks_smoke = TalktoPerfCI(
