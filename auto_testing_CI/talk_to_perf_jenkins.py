@@ -146,7 +146,7 @@ if __name__ == "__main__":
     username = os.environ.get('ET_Perf_User') or sys.argv[3]
     password = os.environ.get('ET_Perf_User_Password') or sys.argv[4]
     baseline_job_name = sys.argv[5]
-    baseline_job_id = sys.argv(6)
+    baseline_job_id = sys.argv[6]
     et_rc_version = sys.argv[7]
     errata_fetch_brew_build = sys.argv[8]
 
