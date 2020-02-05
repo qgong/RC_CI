@@ -205,6 +205,7 @@ check_and_initialize_pulp_docker() {
     echo "== Done for ${pulp_docker_server}"
   else
     pulp_for_docker_deploy=true
+    pulp_for_docker_production=$( echo ${pulp_for_docker_production} | sed "s/-server//" )
     pulp_for_docker_ansible=" -e pulp_build=${pulp_for_docker_production}"
     pulp_for_docker_production_integer=$(echo ${pulp_for_docker_production} | sed "s/[^0-9]*//g")
     pulp_for_docker_installed_integer=$(echo ${pulp_for_docker_installed} | sed "s/[^0-9]*//g" | cut -c "1-${#pulp_for_docker_production_integer}")
@@ -227,6 +228,7 @@ check_and_initialize_pulp_docker() {
     echo "== The pulp-docker  installed is the same as the pulp production, no need to update it =="
   else
     pulp_docker_deploy=true
+    pulp_docker_production=$( echo ${pulp_docker_production} | sed "s/-plugins//" )
     pulp_docker_ansible=" -e pulp_docker_build=${pulp_docker_production}"
     pulp_docker_production_integer=$(echo ${pulp_docker_production} | sed "s/[^0-9]*//g")
     pulp_docker_installed_integer=$(echo ${pulp_docker_installed}   | sed "s/[^0-9]*//g" | cut -c "1-${#pulp_docker_production_integer}")
